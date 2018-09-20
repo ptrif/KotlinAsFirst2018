@@ -70,10 +70,10 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = (hours * 3600) + (min
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val s = sagenes * 3 * 48 * 4.445
-    val a = arshins * 48 * 4.445
-    val v = vershoks * 4.445
-    return (s + a + v) / 100
+    val s = ((sagenes * 3)*48* 4.445)/100
+    val a = (arshins * 48 * 4.445)/100
+    val v = (vershoks * 4.445)/100
+    return (s + a + v)
 }
 
 /**
@@ -84,8 +84,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
     val g = grad * (PI / 180)
-    val m = min * (PI / 180 * 60)
-    val s = sec * (PI / 180 * 3600)
+    val m = (min /60)*(PI / 180)
+    val s = sec/360 * (PI / 180)
     return (g + m + s)
 }
 
@@ -136,7 +136,9 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
     val x= (initial*percent)+initial
-    return ((x*3).toDouble())
+    val y= (x*percent)+x
+    val z= (y*percent)+y
+    return ((x+y+z).toDouble())
 
 }
 
