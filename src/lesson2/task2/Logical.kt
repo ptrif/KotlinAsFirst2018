@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task2
 
+import lesson1.task1.numberRevert
 import lesson1.task1.sqr
 
 /**
@@ -17,7 +19,10 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    return (number % 10000) / 1000 + (number % 1000) / 100 == (number % 100) / 10 + number % 10
+}
+
 
 /**
  * Простая
@@ -26,6 +31,7 @@ fun isNumberHappy(number: Int): Boolean = TODO()
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
+
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
 
 
@@ -45,7 +51,8 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean =
+        sqr(x2 - x1) + sqr(y2 - y1) <= sqr(r2-r1)
 
 /**
  * Средняя
