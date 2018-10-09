@@ -70,9 +70,9 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = (hours * 3600) + (min
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val s = (sagenes*48* 4.445)/100
-    val a = (arshins * 16 * 4.445)/100
-    val v = (vershoks * 4.445)/100
+    val s = (sagenes * 48 * 4.445) / 100
+    val a = (arshins * 16 * 4.445) / 100
+    val v = (vershoks * 4.445) / 100
     return (s + a + v)
 }
 
@@ -82,10 +82,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
-    val r= (grad.toDouble() + (min.toDouble()/60.0) + (sec.toDouble()/3600.0)) * PI / 180.0
-    return r
-}
+fun angleInRadian(grad: Int, min: Int, sec: Int) = (grad.toDouble() + (min.toDouble()/60.0) + (sec.toDouble()/3600.0)) * PI / 180.0
+
 
 /**
  * Тривиальная
@@ -133,9 +131,9 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val x= (initial*(percent)/100.0)+initial
-    val y= (x*(percent)/100.0)+x
-    val z= (y*(percent)/100.0)+y
+    val x = (initial * (percent) / 100.0) + initial
+    val y = (x * (percent) / 100.0) + x
+    val z = (y * (percent) / 100.0) + y
     return (z)
 
 }
