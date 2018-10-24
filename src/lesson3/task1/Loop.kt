@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -74,7 +75,7 @@ fun digitNumber(n: Int): Int {
     do {
         number /= 10
         count++
-    } while (number > 0)
+    } while (abs(number) > 0)
     return count
 }
 
@@ -94,7 +95,14 @@ fun fib(n: Int): Int = if (n <= 2) 1 else fib(n - 1) + fib(n - 2)
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Nothing = TODO()
+fun lcm(m: Int, n: Int): Int { //nok(m,n)=(m*n)/nod(a,b)
+    var k = 0
+    do {
+        k += maxOf(m, n)
+    } while ((k % m != 0) || (k % n != 0))
+
+    return k
+}
 
 /**
  * Простая
@@ -103,10 +111,11 @@ fun lcm(m: Int, n: Int): Nothing = TODO()
  */
 fun minDivisor(n: Int): Int {
     var minD = n
-    for (k in 2..n - 1) {
+    for (k in 2 until n/2) {
         if ((n % k == 0) && (k < minD))
             minD = k
     }
+
     return (minD)
 }
 
@@ -117,7 +126,7 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var maxD = 1
-    for (l in 2..n - 1) {
+    for (l in 2 until n) {
         if ((n % l == 0) && (l > maxD))
             maxD = l
     }
@@ -132,13 +141,9 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    if ((m < 2) || (n < 2)) return false
-    for (x in 2..m - 1) {
-        if (m % x == 0) return false
-
-    }
-    for (y in 2..n - 1) {
-        if (n % y == 0) return false
+    if (((m == 1) || (n == 1)) && ((n != 0) || (m != 0))) return true
+    for (x in 2..minOf(m, n)) {
+        if ((m % x == 0) && (n % x == 0) || (m == 1) || (n == 1)) return false
     }
     return true
 }
@@ -150,7 +155,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean= TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+
 /**
  * Средняя
  *

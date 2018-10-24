@@ -138,6 +138,8 @@ class Tests {
         assertFalse(isCoPrime(37, 111))
         assertTrue(isCoPrime(1234567890, 908765431))
         assertTrue(isCoPrime(2109876543, 1234567891))
+        assertTrue(isCoPrime(33729, 1))
+        assertTrue(isCoPrime(1, 48478))
     }
 
     @Test
