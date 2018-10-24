@@ -111,7 +111,7 @@ fun lcm(m: Int, n: Int): Int { //nok(m,n)=(m*n)/nod(a,b)
  */
 fun minDivisor(n: Int): Int {
     var minD = n
-    for (k in 2 until n/2) {
+    for (k in 2..sqrt(n.toDouble()).toInt()) {
         if ((n % k == 0) && (k < minD))
             minD = k
     }
