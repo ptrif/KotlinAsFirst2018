@@ -86,8 +86,21 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = if (n <= 2) 1 else fib(n - 1) + fib(n - 2)
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    var c = 1
+    for (i in 3..n) {
+        c = a + b
+        a = b
+        b = c
 
+    }
+    return c
+}
+
+
+//if (n <= 2) 1 else fib(n - 1) + fib(n - 2)
 
 /**
  * Простая
@@ -110,13 +123,12 @@ fun lcm(m: Int, n: Int): Int { //nok(m,n)=(m*n)/nod(a,b)
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var minD = n
     for (k in 2..sqrt(n.toDouble()).toInt()) {
-        if ((n % k == 0) && (k < minD))
-            minD = k
-    }
+        if (n % k == 0)
+            return k
 
-    return (minD)
+    }
+    return (n)
 }
 
 /**
@@ -125,12 +137,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxD = 1
-    for (l in 2 until n) {
-        if ((n % l == 0) && (l > maxD))
-            maxD = l
-    }
-    return (maxD)
+    return n/ minDivisor(n)
 }
 
 /**
