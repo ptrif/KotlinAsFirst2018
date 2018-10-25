@@ -2,6 +2,7 @@
 
 package lesson1.task1
 
+import java.lang.Math.pow
 import kotlin.math.*
 
 /**
@@ -82,7 +83,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(grad: Int, min: Int, sec: Int) = (grad.toDouble() + (min)/60.0 + (sec)/3600.0) * PI / 180.0
+fun angleInRadian(grad: Int, min: Int, sec: Int) = (grad.toDouble() + (min) / 60.0 + (sec) / 3600.0) * PI / 180.0
 
 
 /**
@@ -104,8 +105,8 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
 fun thirdDigit(number: Int): Int {
-    val x= number%1000
-    return (x/100)
+    val x = number % 1000
+    return (x / 100)
 
 }
 
@@ -117,10 +118,10 @@ fun thirdDigit(number: Int): Int {
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    val h0= (hoursArrive-hoursDepart)*60
-    val m0= minutesArrive-minutesDepart
+    val h0 = (hoursArrive - hoursDepart) * 60
+    val m0 = minutesArrive - minutesDepart
 
-    return h0+m0
+    return h0 + m0
 }
 
 /**
@@ -131,9 +132,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val x = (initial * (percent) / 100.0) + initial
-    val y = (x * (percent) / 100.0) + x
-    val z = (y * (percent) / 100.0) + y
+    val z = initial * pow((percent / 100.0 + 1), 3.0)
     return (z)
 
 }
@@ -145,9 +144,9 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int {
-    val x1= number/100
-    val x2= (number/10)%10
-    val x3= (number-(x1*100+x2*10))
+    val x1 = number / 100
+    val x2 = (number / 10) % 10
+    val x3 = number % 10
 
-    return (x3*100+x2*10+x1)
+    return (x3 * 100 + x2 * 10 + x1)
 }
