@@ -248,13 +248,13 @@ fun factorizeToString(n: Int): String {
  */
 fun convert(n: Int, base: Int): List<Int> {
     var n1 = n
-    var alist = listOf<Int>()
+    var a = listOf<Int>()
     while (n1 / base != 0) {
-        alist += n1 % base
+        a += n1 % base
         n1 /= base
     }
-    alist += n1
-    return alist.asReversed()
+    a += n1
+    return a.asReversed()
 }
 
 /**
