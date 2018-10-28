@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.digitCountInNumber
 import java.lang.Math.pow
 import kotlin.math.sqrt
 
@@ -242,7 +243,16 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var n1 = n
+    var a = listOf<Int>()
+    while (n1 / base != 0) {
+        a += n1 % base
+        n1 /= base
+    }
+    a += n1
+    return a.asReversed()
+}
 
 /**
  * Сложная
@@ -261,7 +271,14 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var z = 0.0
+
+    for (i in 0 until digits.size) {
+        z += digits[i] * pow(base.toDouble(), (digits.size - i - 1).toDouble())
+    }
+    return z.toInt()
+}
 
 /**
  * Сложная
