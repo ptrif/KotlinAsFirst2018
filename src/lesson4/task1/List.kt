@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.digitCountInNumber
+import java.io.File.separator
 import java.lang.Math.pow
 import kotlin.math.sqrt
 
@@ -234,7 +235,10 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String {
+    val z = factorize(n)
+    return z.joinToString(separator = "*")
+}
 
 /**
  * Средняя
@@ -245,13 +249,13 @@ fun factorizeToString(n: Int): String = TODO()
  */
 fun convert(n: Int, base: Int): List<Int> {
     var n1 = n
-    var a = listOf<Int>()
+    var alist = listOf<Int>()
     while (n1 / base != 0) {
-        a += n1 % base
+        alist += n1 % base
         n1 /= base
     }
-    a += n1
-    return a.asReversed()
+    alist += n1
+    return alist.asReversed()
 }
 
 /**
@@ -262,7 +266,16 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var string = ""
+    val z = convert(n, base)
+    for (element in z) {
+        if (element > 9)
+            string += ('a' + element - 10)
+        else string += element
+    }
+    return string
+}
 
 /**
  * Средняя
