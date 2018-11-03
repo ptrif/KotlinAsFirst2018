@@ -146,7 +146,6 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return list
     val c = mean(list)
     for ((index, element) in list.withIndex()) {
         list[index] = element - c
@@ -163,7 +162,6 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
-    if (a.size != b.size) return 0.0
     for (i in 0 until a.size) {
         c += a[i] * b[i]
     }
@@ -180,7 +178,6 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var z = 0.0
-    if (p.isEmpty()) return 0.0
     for (i in 0 until p.size) {
         z += p[i] * pow(x, i.toDouble())
     }
@@ -198,7 +195,6 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return list
     var sum = 0.0
     for (i in 0 until list.size) {
         list[i] += sum
@@ -234,10 +230,9 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val z = factorize(n)
-    return z.joinToString(separator = "*")
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
+
 
 /**
  * Средняя
