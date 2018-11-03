@@ -74,7 +74,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
     val s = (sagenes * 48 * 4.445) / 100
     val a = (arshins * 16 * 4.445) / 100
     val v = (vershoks * 4.445) / 100
-    return (s + a + v)
+    return s + a + v
 }
 
 /**
@@ -106,7 +106,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
  */
 fun thirdDigit(number: Int): Int {
     val x = number % 1000
-    return (x / 100)
+    return x / 100
 
 }
 
@@ -131,11 +131,8 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val z = initial * pow((percent / 100.0 + 1), 3.0)
-    return (z)
+fun accountInThreeYears(initial: Int, percent: Int): Double = initial * pow((percent / 100.0 + 1), 3.0)
 
-}
 
 /**
  * Простая
@@ -148,5 +145,5 @@ fun numberRevert(number: Int): Int {
     val x2 = (number / 10) % 10
     val x3 = number % 10
 
-    return (x3 * 100 + x2 * 10 + x1)
+    return x3 * 100 + x2 * 10 + x1
 }
