@@ -122,7 +122,7 @@ fun lcm(m: Int, n: Int): Int { //nok(m,n)=(m*n)/nod(a,b)
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (k in 2..sqrt(n.toDouble()).toInt()) {
+    for (k in 2..sqrt(n.toDouble()).roundToInt()) {
         if (n % k == 0)
             return k
 
@@ -148,7 +148,7 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     if (((m == 1) || (n == 1)) && ((n != 0) || (m != 0))) return true
-    for (x in 2..minOf(m, n)) {
+    for (x in 2..maxOf(m, n)) {
         if ((m % x == 0) && (n % x == 0) || (m == 1) || (n == 1)) return false
     }
     return true
