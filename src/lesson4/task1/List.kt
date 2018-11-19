@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.digitCountInNumber
 import java.io.File.separator
 import java.lang.Math.pow
 import kotlin.math.sqrt
@@ -119,8 +118,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * Модуль пустого вектора считать равным 0.0.
  */
 fun abs(v: List<Double>): Double {
-    val absv: List<Double> = v.map { it * it }
-    return sqrt(absv.sum())
+    val absV = v.map { it * it }
+    return sqrt(absV.sum())
 }
 
 /**
@@ -215,6 +214,7 @@ fun factorize(n: Int): List<Int> {
     var m = n
     val f = mutableListOf<Int>()
     for (e in 2..m) {
+        if (m == 1) break //Марат сказал, что можно исправить таким образом
         while (m % e == 0) {
             m /= e
             f.add(e)
@@ -231,7 +231,6 @@ fun factorize(n: Int): List<Int> {
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
 fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
-
 
 
 /**
