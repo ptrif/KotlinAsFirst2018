@@ -40,7 +40,22 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int = TODO()
+fun daysInMonth(month: Int, year: Int): Int {
+    val leap = leadYear(year)
+    val febLength = if (leap) 29 else 28
+    return when {
+        (month == 2) ->febLength
+        (month + month / 8) % 2 == 0 -> 30
+        else -> 31
+    }
+}
+
+fun leadYear(year: Int): Boolean = when {
+    ((year % 400 == 0) || (year % 4 == 0)) -> true
+    year % 100 == 0 -> false
+    else -> false
+}
+
 
 /**
  * Средняя

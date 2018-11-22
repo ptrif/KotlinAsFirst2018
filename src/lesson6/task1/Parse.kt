@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -49,12 +51,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +71,24 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val part = str.split(" ").toMutableList()
+    return try {
+        if (part.size != 3) return ""
+        else run {
+            part[1] = (months.indexOf(part[1]) + 1).toString()
+        }
+        if (part[1] == "0") return ""
+        if (daysInMonth(part[1].toInt(), part[2].toInt()) > part[0].toInt())
+            return String.format("%02d.%02d.%s", part[0].toInt(), part[1].toInt(), part[2])
+        else return ""
+    } catch (e: NumberFormatException) {
+        ""
+    }
+
+}
+
 
 /**
  * Средняя
@@ -83,7 +100,19 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val part = digital.split(".").toMutableList()
+    return try {
+        if (part.size != 3) return ""
+        if (daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) return ""
+        part[1] = months[part[1].toInt() - 1]
+        String.format("%d %s %d", part[0].toInt(), part[1], part[2])
+
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Средняя
