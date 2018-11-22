@@ -42,16 +42,17 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  */
 fun daysInMonth(month: Int, year: Int): Int {
     val leap = leadYear(year)
-    val febLength = if (leap) 28 else 29
+    val febLength = if (!leap) 28 else 29
     return when {
-        (month == 2) ->febLength
+        (month == 2) -> febLength
         (month + month / 8) % 2 == 0 -> 30
         else -> 31
     }
 }
 
 fun leadYear(year: Int): Boolean = when {
-    ((year % 400 == 0) || (year % 4 == 0)) -> true
+    year % 400 == 0 -> true
+    ((year % 4 == 0) && (year % 100 != 0)) -> true
     year % 100 == 0 -> false
     else -> false
 }
