@@ -221,14 +221,29 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = a.clear()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
+    val neededKeys = a.filterKeys { a[it] == b[it] }
+    for ((key, _) in neededKeys) {
+        a.remove(key)
+    }
+
+}
 
 /**
  * Простая
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val sameNames = mutableListOf<String>()
+    for (e in a) {
+        if (e in b) {
+            sameNames.add(e)
+        }
+    }
+    return sameNames
+}
+
 
 /**
  * Средняя
@@ -239,7 +254,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.all { chars.contains(it) }
 
 /**
  * Средняя
@@ -253,7 +268,20 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val reps = mutableMapOf<String, Int>()
+    val countsList = list.toMutableList()
+    list.onEach {
+        var count = 0
+        do {
+            countsList.remove(it)
+            count++
+        } while (countsList.contains(it))
+        if (count > 1) reps[it] = count
+    }
+
+    return reps
+}
 
 /**
  * Средняя
@@ -283,7 +311,15 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val someList = list.toSet()
+    val n = number //создано, потому что мне не хочется постоянно писать полное имя
+    for (e in someList) {
+        if ((n - e) in (someList - e)) return (list.indexOf(e) to (someList - e).indexOf(n - e) + 1)
+        else break
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная
