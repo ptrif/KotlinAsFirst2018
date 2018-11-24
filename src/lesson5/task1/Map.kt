@@ -241,7 +241,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
             sameNames.add(e)
         }
     }
-    return sameNames
+    return sameNames.toSet().toList()
 }
 
 
@@ -254,7 +254,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.all { chars.contains(it) }
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.all {it ->chars.contains(it) }
 
 /**
  * Средняя
@@ -312,13 +312,16 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val someList = list.toSet()
-    val n = number //создано, потому что мне не хочется постоянно писать полное имя
-    for (e in someList) {
-        if ((n - e) in (someList - e)) return (list.indexOf(e) to (someList - e).indexOf(n - e) + 1)
+    val part = mutableMapOf<Int, Int>()
+    val n = number
+    val someList = list.size
+    for (e in 0 until someList)
+        part[list[e]] = e
+    for (elem in list) {
+        if ((part[elem] != part[n - elem]) && (n - elem) in part) return (part[elem]!! to part[n - elem]!!)
         else break
     }
-    return Pair(-1, -1)
+    return -1 to -1
 }
 
 /**
