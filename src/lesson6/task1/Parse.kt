@@ -104,10 +104,12 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val part = digital.split(".").toMutableList()
-    if ((part.size != 3)|| ((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) || (part[1].toInt() !in 1..12))) return ""
-    part[1] = months[part[1].toInt() - 1]
-    return String.format("%d %s %s", part[0].toInt(), part[1], part[2])
-
+    return try {
+        if ((part.size != 3) || ((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) || (part[1].toInt() !in 1..12))) return ""
+        return String.format("%d %s %s", part[0].toInt(), months[part[1].toInt()], part[2])
+    } catch (e: Exception) {
+        ""
+    }
 
 }
 
@@ -160,7 +162,7 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     var jumpList = jumps.split(" ")
-    jumpList = jumpList.filter { (it != "+") && (it != "%") && (it != "-") }
+    jumpList = jumpList.filter { (it != "+") && (it != "%") && (it != "-") && (it != "") && (it != " ") }
     if (jumpList.isEmpty())
         return -1
     else
