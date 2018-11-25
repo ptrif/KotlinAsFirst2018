@@ -2,7 +2,9 @@
 
 package lesson5.task1
 
+import lesson4.task1.abs
 import lesson4.task1.mean
+import kotlin.math.abs
 
 /**
  * Пример
@@ -316,14 +318,13 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    for (i in 0 until list.size - 1) {
-        for (j in (i + 1) until list.size) {
-            //if ((number <= list[i]) && (list[j] != 0) || (number <= list[j]) && (list[i] != 0)) continue
-            while ((number < list[i]) || (number < list[j])) continue
-            if (list[i] + list[j] == number) return (i to j)
+    for (e in list) {
+        if (((number - e) in list) && (list.indexOf(e) != list.indexOf(abs(e - number)))) {
+            val i = list.indexOf(e)
+            val j = list.indexOf(abs(e - number))
+            return (i to j)
         }
     }
-
     return (-1 to -1)
 }
 

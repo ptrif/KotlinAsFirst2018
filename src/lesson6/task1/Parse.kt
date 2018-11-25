@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.util.stream.Collectors.maxBy
 
 /**
  * Пример
@@ -83,7 +84,7 @@ fun dateStrToDigit(str: String): String {
         if (daysInMonth(part[1].toInt(), part[2].toInt()) >= part[0].toInt())
             return String.format("%02d.%02d.%s", part[0].toInt(), part[1].toInt(), part[2])
         else return ""
-    } catch (e: NumberFormatException) {
+    } catch (e: Exception) {
         ""
     }
 
@@ -104,12 +105,13 @@ fun dateDigitToStr(digital: String): String {
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val part = digital.split(".").toMutableList()
     return try {
+        if (!Regex("^[0-9]{2}.[0-9]{2}\\S+ [0-9].*$").containsMatchIn(digital)) throw Exception()
         if (part.size != 3) return ""
-        if (daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) return ""
+        if ((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) || (part[1].toInt() !in 1..12)) return ""
         part[1] = months[part[1].toInt() - 1]
         String.format("%d %s %s", part[0].toInt(), part[1], part[2])
 
-    } catch (e: NumberFormatException) {
+    } catch (e: Exception) {
         ""
     }
 }
@@ -138,7 +140,18 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var jumpList = jumps.split(" ")
+    jumpList = jumpList.filter { (it != " ") && (it != "%") && (it != "-") }
+    if (jumpList.isEmpty())
+        return -1
+    else
+        return try {
+            jumpList.maxBy(String::toInt)!!.toInt()
+        } catch (e: Exception) {
+            return -1
+        }
+}
 
 /**
  * Сложная
@@ -150,7 +163,20 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var jumpList = jumps.split(" ")
+    jumpList = jumpList.filter { (it != "+") && (it != "%") && (it != "-") }
+    if (jumpList.isEmpty())
+        return -1
+    else
+        return try {
+            jumpList.maxBy(String::toInt)!!.toInt()
+        } catch (e: Exception) {
+            -1
+        }
+
+}
+
 
 /**
  * Сложная
