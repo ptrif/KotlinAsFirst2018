@@ -2,9 +2,8 @@
 
 package lesson5.task1
 
-import lesson4.task1.abs
+
 import lesson4.task1.mean
-import kotlin.math.abs
 
 /**
  * Пример
@@ -127,9 +126,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     for ((k, v) in grades)
         student.getOrPut(v, ::mutableListOf).add(k)
     for ((v) in student) {
-        student.onEach {
-            student[v]!!.sortDescending()
-        }
+        student[v]!!.sortDescending()
     }
     return student
 }
@@ -161,7 +158,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     stockPrices.onEach { (k, v) ->
         if (k !in res)
             res[k] = mutableListOf()
-        (if (res[k] != null) res[k] else throw NullPointerException("Expression 'res[k]' must not be null"))?.add(v)
+        res[k]!!.add(v)
     }
     return res.mapValues { (_, v) -> mean(v) }
 }
@@ -317,16 +314,20 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    for (e in list) {
-        if (((number - e) in list) && (list.indexOf(e) != list.indexOf(abs(e - number)))) {
-            val i = list.indexOf(e)
-            val j = list.indexOf(abs(e - number))
-            return (i to j)
-        }
-    }
-    return (-1 to -1)
-}
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO() //все еще думаю как сделать эффективнее
+    //   val map = mutableMapOf<Int, Int>()
+    // return -1 to -1
+
+
+//    for (e in list) {
+//        if (((number - e) in list) && (list.indexOf(e) != list.indexOf(abs(e - number)))) {
+//            val i = list.indexOf(e)
+//            val j = list.indexOf(abs(e - number))
+//            return (i to j)
+//        }
+//    }
+//    return (-1 to -1)
+
 
 /**
  * Очень сложная
