@@ -115,7 +115,8 @@ fun dateDigitToStr(digital: String): String {
     val part = digital.split(".").toList()
     return try {
         if (part.size != 3) return ""
-        if (((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt()) || (part[1].toInt() !in 1..12))) return ""
+        if ((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt())) return ""
+        if (part[1].toInt() !in 1..12) return ""
         return String.format("%d %s %s", part[0].toInt(), months[part[1].toInt() - 1], part[2])
     } catch (e: Exception) {
         ""
@@ -155,8 +156,8 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    var jumpList = jumps.split(" ")
-    jumpList = jumpList.filter { (it != "%") && (it != "-") && (it != "") }
+    // var jumpList = jumps.split(" ")
+    val jumpList = jumps.split(" ").filter { (it != "%") && (it != "-") && (it != "") }
     if (jumpList.isEmpty())
         return -1
     else
@@ -180,7 +181,7 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val res = mutableSetOf<Int>()
     var jumpsNeeded = setOf<String>()
-    for (e in Regex("\\d*\\s*[+%-]*\\s?").findAll(jumps).toList()) {
+    for (e in Regex("\\d*\\s*[+%-]*\\s?").findAll(jumps).toSet()) {
         if (e.value.contains("+"))
             jumpsNeeded += (e.value)
     }
