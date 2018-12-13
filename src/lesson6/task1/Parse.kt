@@ -78,22 +78,16 @@ fun dateStrToDigit(str: String): String {
             "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября",
             "ноября", "декабря")
-    val part = str.split(" ").toMutableList()
-    return try {
-        if (part.size != 3) return ""
-        else {
-            part[1] = (months.indexOf(part[1]) + 1).toString()
-        }
+    val part = str.split(" ")
+    if (part.size != 3) return ""
 
-        if (part[1] == "0") return ""
-        if (part[0] == "0") return ""
-        return if (daysInMonth(part[1].toInt(), part[2].toInt()) >= part[0].toInt())
-            String.format("%02d.%02d.%s", part[0].toInt(), part[1].toInt(), part[2])
-        else ""
-    } catch (e: Exception) {
+    val month = months.indexOf(part[1]) + 1
+    val days = part[0].toIntOrNull() ?: return ""
+    val years = part[2].toIntOrNull() ?: return ""
+    return if ((month != 0) && (daysInMonth(month, years) >= days))
+        String.format("%02d.%02d.%s", days, month, years)
+    else
         ""
-    }
-
 }
 
 
@@ -112,15 +106,16 @@ fun dateDigitToStr(digital: String): String {
             "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября",
             "ноября", "декабря")
-    val part = digital.split(".").toList()
-    return try {
-        if (part.size != 3) return ""
-        if ((daysInMonth(part[1].toInt(), part[2].toInt()) < part[0].toInt())) return ""
-        if (part[1].toInt() !in 1..12) return ""
-        return String.format("%d %s %s", part[0].toInt(), months[part[1].toInt() - 1], part[2])
-    } catch (e: Exception) {
+    val part = digital.split(".")
+    if (part.size != 3) return ""
+
+    val days = part[0].toIntOrNull() ?: return ""
+    val years = part[2].toIntOrNull() ?: return ""
+    val month = part[1].toIntOrNull() ?: return ""
+    return if ((month !in 1..12) || (daysInMonth(month, years) < days))
         ""
-    }
+    else
+        String.format("%d %s %s", days, months[month - 1], years)
 
 }
 
@@ -181,7 +176,7 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val res = mutableSetOf<Int>()
     var jumpsNeeded = setOf<String>()
-    for (e in Regex("\\d*\\s*[+%-]*\\s?").findAll(jumps).toSet()) {
+    for (e in Regex("\\d*\\s*[+%-]+\\s?").findAll(jumps).toSet()) {
         if (e.value.contains("+"))
             jumpsNeeded += (e.value)
     }
@@ -205,8 +200,13 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    if (!Regex("\\d+(\\s[+\\-]\\s\\d+)*").matches(expression)) throw IllegalArgumentException()
-    return Regex("\\d+|[+\\-] \\d+").findAll(expression).map { it.value }.map { it.filter { it != ' ' } }.map { it.toInt() }.sum()
+    if (!Regex("\\d+(\\s[+\\-]\\s\\d+)*").matches(expression))
+        throw IllegalArgumentException()
+    return Regex("\\d+|[+\\-] \\d+").findAll(expression)
+            .map { it.value }
+            .map { it.filter { it != ' ' } }
+            .map { it.toInt() }
+            .sum()
 }
 
 /**
