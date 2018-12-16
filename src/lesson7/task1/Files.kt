@@ -54,9 +54,10 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val reader = File(inputName).bufferedReader().readText()
     val massive = substrings.map {
         Pair(it,
-                File(inputName).readText().split(it, ignoreCase = true).count() - 1)
+                reader.split(it, ignoreCase = true).count() - 1)
     }.toMap()
     return massive
 }
@@ -74,15 +75,16 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-fun sibilants(inputName: String, outputName: String) { //???? файл не выводится ????
+fun sibilants(inputName: String, outputName: String) {
     val correctionsMap = mutableMapOf("Ы" to "И", "Я" to "А", "Ю" to "У",
             "ы" to "и", "я" to "а", "ю" to "у") // сохранение регистра через большую мапу
 
     val writer = File(outputName).bufferedWriter()
     val reg = Regex("""(?<=[жчшщ])[ыяю]""", RegexOption.IGNORE_CASE)
-    val correctText = File(inputName).readText().replace(reg) {
-        correctionsMap[it.value].toString() //return@replace correctionsMap[it.value].toString()
-    }
+    val correctText = File(inputName).readText()
+            .replace(reg) {
+                correctionsMap[it.value].toString() //return@replace correctionsMap[it.value].toString()
+            }
     writer.write(correctText)
     writer.close()
 }
@@ -105,7 +107,18 @@ fun sibilants(inputName: String, outputName: String) { //???? файл не вы
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).bufferedReader().readLines().map { it.trim() }
+    val writer = File(outputName).bufferedWriter()
+    val maxLengthOfLine = lines.map { it.length }.max() ?: 0
+
+    lines.onEach {
+        val length = (maxLengthOfLine - it.length) / 2
+        writer.write(" ".repeat(length) + it)
+        if (lines.indexOf(it) != it.length)
+            writer.newLine()
+    }
+
+    writer.close()
 }
 
 /**
@@ -157,7 +170,19 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> { //??
+    val mostMetWords = Regex("""[a-zа-яё]*""", RegexOption.IGNORE_CASE)
+    val reader = File(inputName).bufferedReader().readText().toLowerCase()
+
+    return mostMetWords.findAll(reader)
+            .map { it.value }
+            .toSet()
+            .groupBy { it }
+            .map { (k, v) -> Pair(k, v.count()) }
+            .sortedBy { it.second }
+            .take(20)
+            .toMap()
+}
 
 /**
  * Средняя
@@ -223,7 +248,16 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val reader = File(inputName).bufferedReader()
+            .readLines()
+            .map { it.trim() }
+            .filter { it.length == it.toLowerCase().toSet().count() }
+
+    val writer = File(outputName).bufferedWriter()
+    val maxLengthOfTheWord = reader.map { it.length }.max() ?: 0
+
+    writer.write(reader.filter { maxLengthOfTheWord == it.length }.joinToString())
+    writer.close()
 }
 
 /**
