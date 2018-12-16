@@ -170,18 +170,21 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> { //??
-    val mostMetWords = Regex("""[a-zа-яё]*""", RegexOption.IGNORE_CASE)
-    val reader = File(inputName).bufferedReader().readText().toLowerCase()
-
+fun top20Words(inputName: String): Map<String, Int> { /*как можно сделать эту задачу эффективнее?
+                                                     (шустрее), а то она выполняется дольше всех...*/
+    val reader = File(inputName).readText().toLowerCase()
+    val mostMetWords = Regex("""[a-zа-яё]*""")
     return mostMetWords.findAll(reader)
             .map { it.value }
-            .toSet()
+            .toList()
+            .filter { it != "" }
             .groupBy { it }
             .map { (k, v) -> Pair(k, v.count()) }
-            .sortedBy { it.second }
+            .sortedByDescending { it.second }
             .take(20)
             .toMap()
+
+
 }
 
 /**
