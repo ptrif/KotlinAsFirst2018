@@ -113,19 +113,19 @@ data class Segment(val begin: Point, val end: Point) {
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
 fun diameter(vararg points: Point): Segment {
-    if (points.size < 2) throw IllegalArgumentException("Oh dear, you need more points for this")
-    var maxLength = -1.0
+    if (points.size < 2) throw IllegalArgumentException()
+    var maxLength = 0.0
     var resultSegment = Segment(points[0], points[1])
-    (0..points.size - 2)//Идея предложила заменить два for на .forEach. Ну, а мне понравилось как это выглядит \(*0^0*)/
-            .forEach { i ->
-                for (j in (i + 1) until points.size) {
-                    val currentLength = points[i].distance(points[j])
-                    if (currentLength > maxLength)
-                        maxLength = points[i].distance(points[j])
+    for (i in 0 until points.size - 1)//не мог же крашится рандомный тест из-за .forEach...
+    {
+        for (j in (i + 1) until points.size) {
+            val currentLength = points[i].distance(points[j])
+            if (currentLength > maxLength)
+                maxLength = points[i].distance(points[j])
 
-                    resultSegment = Segment(points[i], points[j])
-                }
-            }
+            resultSegment = Segment(points[i], points[j])
+        }
+    }
 
     return resultSegment
 
@@ -165,7 +165,20 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Найти точку пересечения с другой линией.
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
-    fun crossPoint(other: Line): Point = TODO()
+    fun crossPoint(other: Line): Point {
+
+        val alpha = angle
+        val bettha = other.angle
+        if (alpha == bettha) throw IllegalArgumentException()
+        val crossPointX = (b * cos(bettha) - other.b * cos(alpha)) / sin(bettha - alpha)
+        val crossPointY =
+                if (alpha == PI / 2) (crossPointX * sin(bettha) + other.b) / cos(bettha)
+                else {
+                    (crossPointX * sin(alpha) + b) / cos(alpha)
+                }
+
+        return Point(crossPointX, crossPointY)
+    }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
@@ -183,21 +196,33 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line = lineByPoints(s.begin, s.end)
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line {
+    val alpha = (atan((a.y - b.y) / (a.x - b.x)) + 2 * PI) % PI
+    return if (alpha >= 0) Line(a, alpha)
+    else Line(b, alpha)
+}
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line { //ну и намучалась же я с этой задачей
+    val alpha = (atan((a.y - b.y) / (a.x - b.x)) + PI / 2) % PI
+    val center = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
+    return when {
+        alpha >= PI -> Line(center, alpha - PI)
+        alpha >= 0 -> Line(center, alpha)
+        else -> (Line(center, alpha + PI))
+    }
+}
 
 /**
  * Средняя
@@ -216,7 +241,13 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle { //хоть где-то пригадились билеты с зачетов по геометрии с шк...
+    val bisLine1 = bisectorByPoints(a, b)
+    val bisLine2 = bisectorByPoints(b, c)
+    val centerOfCircle = bisLine1.crossPoint(bisLine2)
+    return Circle(centerOfCircle, radius = centerOfCircle.distance(b))
+
+}//сначала написала все это через "=", получилось компактно,но не читабельно
 
 /**
  * Очень сложная
@@ -230,4 +261,20 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
  * соединяющий две самые удалённые точки в данном множестве.
  */
 fun minContainingCircle(vararg points: Point): Circle = TODO()
+//я тут вроде как поняла как решать, но объяснить компудактеру как это делать у мменя не особо вышло
+// возможно проблема в алгоритме, мне кажется я упускаю какую-то важную деталь
+// возможно за ночь я пойму как это делать
+// но если нет, то ПОЖАЛУЙСТА подскажите что тут не так
+/* 1. чекнуть на пустоту поинты и бросится исключением
+   2. если точета 1 = бахнуть кружок с нулевым радиусом //вот тут я долго думала
+   3. если точки 2 = бахнуть кружок побольше с радиусом = диаметр/2 (circleByDiameter - хелпанет мне, наверное)
+   4. а вот тут начинается танцы до утра с 3 точечками
+       а) тут сто-проц нужно circleBy3Points
+       б) нужна перемнная для минимального радиуса, чтоб по нему уже искать этот кружок
+       в) чтоб найти что-то минимальное, сначало нужно задать что-то максимальное - это я еще с молодости егэшного паскаля помню
+       г) собсна, бегаем по трем точечькам с помощью циклов for ну или что-то более оригинальное и кошерное в помощь
+       д) наверное, где-то тут должен примчатся на помощь пункт (а), но это не точно
+       е) сравнение радиусов
+       ж) вывод радиуса
+* */
 
