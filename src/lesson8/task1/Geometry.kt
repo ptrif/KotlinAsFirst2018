@@ -112,20 +112,20 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment {
+fun diameter(vararg points: Point): Segment {//рандомные тесты Котоеда заставляют меня рыдать
     if (points.size < 2) throw IllegalArgumentException()
     var maxLength = 0.0
-    var resultSegment = Segment(points[0], points[1])
-    for (i in 0 until points.size - 1)//не мог же крашится рандомный тест из-за .forEach...
-    {
-        for (j in (i + 1) until points.size) {
-            val currentLength = points[i].distance(points[j])
-            if (currentLength > maxLength)
-                maxLength = points[i].distance(points[j])
-
-            resultSegment = Segment(points[i], points[j])
-        }
-    }
+    var resultSegment = Segment(points[0], points[0])
+    (0 until points.size - 1)
+            .forEach { i ->
+                ((i + 1) until points.size)
+                        .forEach { j ->
+                            val currentLength = points[i].distance(points[j])
+                            if (currentLength > maxLength)
+                                maxLength = points[i].distance(points[j])
+                            resultSegment = Segment(points[i], points[j])
+                        }
+            }
 
     return resultSegment
 
