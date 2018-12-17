@@ -1,11 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task1
 
 import lesson1.task1.sqr
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -33,7 +31,8 @@ class Triangle private constructor(private val points: Set<Point>) {
 
     val c: Point get() = pointList[2]
 
-    constructor(a: Point, b: Point, c: Point): this(linkedSetOf(a, b, c))
+    constructor(a: Point, b: Point, c: Point) : this(linkedSetOf(a, b, c))
+
     /**
      * Пример: полупериметр
      */
@@ -76,14 +75,24 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        val radiusSum = this.radius + other.radius
+        val distanceBetween2Circle = center.distance(other.center) - radiusSum
+
+        return if ((distanceBetween2Circle) < 0.0) 0.0
+        else (distanceBetween2Circle)
+    }
 
     /**
      * Тривиальная
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = center.distance(p) <= radius
+    /*идея сконвертила изначальное решение в эту строчку (пояснение тут скорее для меня)
+      изначально это было так:
+                  return if (center.distance(p)<= radius) true
+                         else false*/
 }
 
 /**
@@ -103,7 +112,24 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    if (points.size < 2) throw IllegalArgumentException("Oh dear, you need more points for this")
+    var maxLength = -1.0
+    var resultSegment = Segment(points[0], points[1])
+    (0..points.size - 2)//Идея предложила заменить два for на .forEach. Ну, а мне понравилось как это выглядит \(*0^0*)/
+            .forEach { i ->
+                for (j in (i + 1) until points.size) {
+                    val currentLength = points[i].distance(points[j])
+                    if (currentLength > maxLength)
+                        maxLength = points[i].distance(points[j])
+
+                    resultSegment = Segment(points[i], points[j])
+                }
+            }
+
+    return resultSegment
+
+}
 
 /**
  * Простая
@@ -111,7 +137,14 @@ fun diameter(vararg points: Point): Segment = TODO()
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle {
+    val x = (diameter.begin.x + diameter.end.x) / 2
+    val y = (diameter.begin.y + diameter.end.y) / 2
+    val center = Point(x, y)
+    val radius = diameter.begin.distance(diameter.end) / 2
+    return Circle(center, radius = radius)
+}//можно,конечно, не расписывать такое количество переменных,но лично мне так понятнее
+
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -124,7 +157,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         require(angle >= 0 && angle < PI) { "Incorrect line angle: $angle" }
     }
 
-    constructor(point: Point, angle: Double): this(point.y * cos(angle) - point.x * sin(angle), angle)
+    constructor(point: Point, angle: Double) : this(point.y * cos(angle) - point.x * sin(angle), angle)
 
     /**
      * Средняя
