@@ -223,7 +223,30 @@ fun top20Words(inputName: String): Map<String, Int> { /*как можно сде
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    val reader = File(inputName).readLines()
+    val writer = File(outputName).bufferedWriter()
+    val str = StringBuilder()
+    val transDictionary = dictionary.mapKeys { it.key.toLowerCase() }
+                                                    .mapValues { it.value.toLowerCase() }
+    reader.forEach { line ->
+        (0 until line.length).forEach { i ->
+            when {
+                line[i].isUpperCase() ->
+                    if (line[i].toLowerCase() in transDictionary)
+                        str.append(transDictionary[line[i].toLowerCase()]?.capitalize())
+
+                else ->
+                    if (line[i] in transDictionary.keys)
+                        str.append(transDictionary[line[i]])
+                    else
+                        str.append(line[i])
+            }
+        }
+        str.appendln()
+    }
+
+    writer.write(str.toString())
+    writer.close()
 }
 
 /**

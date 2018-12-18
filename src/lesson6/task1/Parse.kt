@@ -131,14 +131,13 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String {
-    return if (!Regex("""(?:[+]\d(?:[\s]*\d)*\s-*)?(?:\((?:[\s-]*\d)*[\s-]*\))?((?:[\s-]*\d)*)""").matches(phone))
-        ""
-    else
-        (Regex("""[()\s-]*""").replace(phone, ""))
+fun flattenPhoneNumber(phone: String): String =
+        if (!Regex("""(?:[+]\d(?:[\s]*\d)*\s-*)?(?:\((?:[\s-]*\d)*[\s-]*\))?((?:[\s-]*\d)*)""").matches(phone))
+            ""
+        else
+            (Regex("""[()\s-]*""").replace(phone, ""))
 
 /*мечтаю о цветовом разделении для Regex. Ибо полчаса не могла понять где я пропустила скобки */
-}
 
 /**
  * Средняя

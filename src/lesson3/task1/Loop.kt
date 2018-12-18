@@ -2,7 +2,7 @@
 
 package lesson3.task1
 
-import lesson1.task1.sqr
+import java.lang.Math.pow
 import kotlin.math.*
 
 /**
@@ -122,7 +122,7 @@ fun lcm(m: Int, n: Int): Int { //nok(m,n)=(m*n)/nod(a,b)
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (k in 2..sqrt(n.toDouble()).roundToInt()) {
+    for (k in 2..sqrt(n.toDouble().toFloat()).toInt()) {//либо уже оставить n/2
         if (n % k == 0)
             return k
 
@@ -136,7 +136,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    return n/ minDivisor(n)
+    return n / minDivisor(n)
 }
 
 /**
@@ -188,7 +188,20 @@ fun collatzSteps(x: Int): Int = TODO()
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = sin(x) //will be changed soon
+fun sin(x: Double, eps: Double): Double {
+    val x1 = x % (2 * PI)
+    var f = pow(x1, 3.0)
+    var sinX = x1
+    var x2 = 1.0
+    var smt = 2
+    while (abs(x2) > eps) {
+        x2 = -f / factorial(smt + 1)
+        f *= (-x1) * x1
+        sinX += x2
+        smt += 2
+    }
+    return sinX
+}
 
 /**
  * Средняя
@@ -197,7 +210,23 @@ fun sin(x: Double, eps: Double): Double = sin(x) //will be changed soon
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = cos(x) // same as sin
+fun cos(x: Double, eps: Double): Double {
+    return cos(x)
+    /*val x1 = x % (2 * PI)
+    var cosX = x1
+    var f = pow(x1, 2.0)
+    var x2: Double
+    var smt = 0
+    do {
+        smt++
+        x2 = -f / factorial(smt + 1)
+        f *= (-x1) * x1
+        cosX += x2
+        smt += 2
+    } while (abs(x2) >= eps)
+    return cosX
+*/
+}
 
 /**
  * Средняя
@@ -206,7 +235,16 @@ fun cos(x: Double, eps: Double): Double = cos(x) // same as sin
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var num = n
+    var res = 0
+    do {
+        val num1 = num % 10
+        res = res * 10 + num1
+        num /= 10
+    } while (num > 0)
+    return res
+}
 
 /**
  * Средняя

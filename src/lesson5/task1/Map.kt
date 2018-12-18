@@ -274,11 +274,17 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val reps = mutableMapOf<String, Int>()
     val countsList = list.toMutableList()
-    list.onEach {
+    for (it in list) {
+        //var count = 0
+        //if (countsList.contains(it))
+        //  countsList.remove(it)
+        // count++
         var count = 0
         do {
+
             countsList.remove(it)
             count++
+
         } while (countsList.contains(it))
         if (count > 1) reps[it] = count
     }
@@ -315,8 +321,8 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO() //все еще думаю как сделать эффективнее
-    //   val map = mutableMapOf<Int, Int>()
-    // return -1 to -1
+//   val map = mutableMapOf<Int, Int>()
+// return -1 to -1
 
 
 //    for (e in list) {

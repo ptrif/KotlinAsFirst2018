@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import java.io.File.separator
 import java.lang.Math.pow
+import java.lang.StringBuilder
 import kotlin.math.sqrt
 
 /**
@@ -260,14 +261,15 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String { // will be changed soon
-    var string = ""
+    val str = StringBuilder()
     val z = convert(n, base)
     for (element in z) {
-        if (element > 9)
-            string += ('a' + element - 10)
-        else string += element
+        when {
+            element > 9 -> str.append('a' + element - 10)
+            else -> str.append(element)
+        }
     }
-    return string
+    return str.toString()
 }
 
 /**
